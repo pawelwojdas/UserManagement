@@ -4,11 +4,16 @@ import fetchData from "../utils/fetchData";
 import dataToUser from "../utils/dataToUser";
 import {getHobbyList} from "./Hobbies";
 
-
+export enum ActionType {
+    SET_USERS,
+    EDIT_USERS,
+    REMOVE_USERS,
+    ADD_USERS
+};
 
 const usersReducer = (state : UsersInterface, action : UsersAction) => {
     switch (action.type) {
-        case 'SET':
+        case ActionType.SET_USERS:
             return {users: action.users}
         default:
             return {users: state.users}
@@ -25,7 +30,7 @@ export const useUsers = () => {
         const hobbyList = await getHobbyList()!;
 
         dispatch({
-            type: 'SET',
+            type: ActionType.SET_USERS,
             users: fetchedUsers.map(user => dataToUser(user, hobbyList!))
             });
     };

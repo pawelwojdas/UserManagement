@@ -1,11 +1,12 @@
 import { UserInterface } from "./User";
+import { ActionType } from "../services/Users";
 
 export interface UsersInterface {
     users : UserInterface[]
 };
 
 export interface UsersAction {
-    type : 'SET' | 'GET' | 'UPDATE' | 'DELETE';
+    type : ActionType;
     users: UserInterface[];
     user?: UserInterface;
 };
