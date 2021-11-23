@@ -1,15 +1,14 @@
-import { HobbyInterface } from "./Hobby";
+import { Hobby } from "./Hobby";
 
-export interface UserInterface {
+export interface User {
     id: string,
     name : string,
-    lastName: string,
     email : string,
-    age : number,
     gender : 'male' | 'female',
-    phoneNumber : string,
     address : string,
+    age : number,
+    hobbies : Hobby[],
     dateOfBirth : string,
-    hobbies : HobbyInterface[],
+    phoneNumber : string,
 };
 

@@ -1,10 +1,10 @@
 import fetchData from "../utils/fetchData";
-import { HobbyInterface } from "../types/Hobby";
+import { Hobby } from "../types/Hobby";
 
 export const getHobbyList = async () => {
     try {
     
-        const hobbyList: HobbyInterface[] = await fetchData(`${process.env.REACT_APP_BASE_URL}/hobbies.json`);
+        const hobbyList: Hobby[] = await fetchData(`${process.env.REACT_APP_BASE_URL}/hobbies.json`);
 
         if(hobbyList.length === 0) {
             console.log('Error');

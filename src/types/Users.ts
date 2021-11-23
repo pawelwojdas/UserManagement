@@ -1,12 +1,12 @@
-import { UserInterface } from "./User";
+import { User} from "./User";
 import { ActionType } from "../services/Users";
 
-export interface UsersInterface {
-    users : UserInterface[]
+export interface Users {
+    users : User[]
 };
 
 export interface UsersAction {
     type : ActionType;
-    users: UserInterface[];
-    user?: UserInterface;
+    users: User[];
+    user?: User;
 };

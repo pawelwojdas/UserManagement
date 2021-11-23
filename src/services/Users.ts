@@ -1,5 +1,5 @@
 import {useReducer, useEffect} from "react";
-import {UsersInterface, UsersAction} from "../types/Users"
+import {Users, UsersAction} from "../types/Users"
 import fetchData from "../utils/fetchData";
 import dataToUser from "../utils/dataToUser";
 import {getHobbyList} from "./Hobbies";
@@ -11,7 +11,7 @@ export enum ActionType {
     ADD_USERS
 };
 
-const usersReducer = (state : UsersInterface, action : UsersAction) => {
+const usersReducer = (state : Users, action : UsersAction) => {
     switch (action.type) {
         case ActionType.SET_USERS:
             return {users: action.users}

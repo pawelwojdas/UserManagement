@@ -1,23 +1,23 @@
 import React from 'react';
-import {useUsers} from '../services/Users';
-import {UserInterface} from '../types/User';
+import { useUsers } from '../services/Users';
+import { User } from '../types/User';
 
-interface UserContextInterface {
-    users: UserInterface[]
-};
+interface UsersContextState {
+    users: User[];
+}
 
-export const UserContext = React.createContext<UserContextInterface | null>({
-    users: []
-})
+export const UsersContext = React.createContext<UsersContextState>({
+    users: [],
+});
 
-const UserContextProvider: React.FC = props => {
-  const [users] = useUsers();
+const UserContextProvider: React.FC = (props) => {
+    const [users] = useUsers();
 
     return (
-        <UserContext.Provider value ={{users}}>
+        <UsersContext.Provider value={{ users }}>
             {props.children}
-        </UserContext.Provider>
-    )
+        </UsersContext.Provider>
+    );
 };
 
 export default UserContextProvider;
