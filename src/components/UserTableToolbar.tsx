@@ -5,18 +5,23 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { alpha } from '@mui/material/styles';
+import { GridRowId } from '@mui/x-data-grid';
 
 interface UserTableToolbarProps {
-  numSelected: number;
+  selectedUsers: GridRowId[];
+  onDelete: (usersId: GridRowId[]) => void;
 }
 
-const UserTableToolbar = ({ numSelected }: UserTableToolbarProps) => {
+const UserTableToolbar: React.FC<UserTableToolbarProps> = ({
+  selectedUsers,
+  onDelete,
+}) => {
   return (
     <Toolbar
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
+        ...(selectedUsers.length > 0 && {
           bgcolor: (theme) =>
             alpha(
               theme.palette.primary.main,
@@ -25,14 +30,14 @@ const UserTableToolbar = ({ numSelected }: UserTableToolbarProps) => {
         }),
       }}
     >
-      {numSelected > 0 ? (
+      {selectedUsers.length > 0 ? (
         <Typography
           sx={{ flex: '1 1 100%' }}
           color="inherit"
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {selectedUsers.length} selected
         </Typography>
       ) : (
         <Typography
@@ -44,9 +49,13 @@ const UserTableToolbar = ({ numSelected }: UserTableToolbarProps) => {
           User Management
         </Typography>
       )}
-      {numSelected > 0 && (
+      {selectedUsers.length > 0 && (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton
+            onClick={() => {
+              onDelete(selectedUsers);
+            }}
+          >
             <DeleteIcon />
           </IconButton>
         </Tooltip>
