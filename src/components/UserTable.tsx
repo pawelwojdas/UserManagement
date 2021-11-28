@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import UserTableToolbar from './UserTableToolbar';
 import UserActionCell from './UserActionCell';
+import UserNameListToDelete from './UserNameListToDelete';
 import AlertDialog from '../shared/components/AlertDialog';
 import { UsersContext } from '../context/users-context';
 import { Hobby } from '../types/Hobby';
@@ -14,24 +15,20 @@ import {
   GridCallbackDetails,
 } from '@mui/x-data-grid';
 
-import getNamesById from '../utils/getNamesById';
-
 const UserTable: React.FC = () => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
   const [openedDialog, setOpenedDialog] = useState<boolean>(false);
-  const [usersToDelete, setUsersToDelete] = useState<{
-    title: string;
-    content: string;
-    usersId: GridRowId[];
-  }>({ title: '', content: '', usersId: [] });
+
+  const [usersToDeleteId, setUsersToDelete] = useState<GridRowId[]>([]);
+
+  const [deletedUsersId, setDeletedUsersId] = useState<GridRowId[]>([]);
+
   const { users, deleteUsers } = useContext(UsersContext);
 
+  const undoLastDeleteOperationHandler = () => {};
+
   const deleteHandler = (usersId: GridRowId[]) => {
-    setUsersToDelete({
-      title: 'Are you sure you want to delete?',
-      content: getNamesById(users, usersId),
-      usersId,
-    });
+    setUsersToDelete(usersId);
     setOpenedDialog(true);
   };
 
@@ -100,17 +97,20 @@ const UserTable: React.FC = () => {
     <div>
       {openedDialog && (
         <AlertDialog
-          title={usersToDelete.title}
-          content={usersToDelete.content}
+          title={'Are you sure you want to delete?'}
+          confirmButtonText={'Delete'}
           show={true}
           onConfirm={() => {
-            console.log('dziala');
-            deleteUsers(usersToDelete.usersId);
+            setDeletedUsersId(usersToDeleteId);
+            deleteUsers(usersToDeleteId);
           }}
           onClose={() => {
             setOpenedDialog(false);
+            setUsersToDelete([]);
           }}
-        />
+        >
+          <UserNameListToDelete users={users} usersId={usersToDeleteId} />
+        </AlertDialog>
       )}
       <DataGrid
         disableColumnSelector
@@ -126,6 +126,7 @@ const UserTable: React.FC = () => {
             <UserTableToolbar
               selectedUsers={selectedRows}
               onDelete={deleteHandler}
+              undoDeleteOperation={undoLastDeleteOperationHandler}
             />
           ),
         }}

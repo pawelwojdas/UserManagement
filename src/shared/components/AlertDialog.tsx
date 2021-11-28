@@ -9,16 +9,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 interface AlertDialogProps {
   show: boolean;
   title: string;
-  content: string;
+  confirmButtonText: string;
   onConfirm: () => void;
   onClose: () => void;
 }
 const AlertDialog: React.FC<AlertDialogProps> = ({
   show,
   title,
-  content,
+  confirmButtonText,
   onConfirm,
   onClose,
+  children,
 }) => {
   const [open, setOpen] = useState<boolean>(show);
 
@@ -31,9 +32,9 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {content}
-        </DialogContentText>
+        {/* <DialogContentText id="alert-dialog-description"> */}
+        {children}
+        {/* </DialogContentText> */}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
@@ -43,7 +44,7 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
             handleClose();
           }}
         >
-          Confirm
+          {confirmButtonText}
         </Button>
       </DialogActions>
     </Dialog>

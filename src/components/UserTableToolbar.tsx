@@ -10,11 +10,13 @@ import { GridRowId } from '@mui/x-data-grid';
 interface UserTableToolbarProps {
   selectedUsers: GridRowId[];
   onDelete: (usersId: GridRowId[]) => void;
+  undoDeleteOperation: () => void;
 }
 
 const UserTableToolbar: React.FC<UserTableToolbarProps> = ({
   selectedUsers,
   onDelete,
+  undoDeleteOperation,
 }) => {
   return (
     <Toolbar
@@ -54,6 +56,7 @@ const UserTableToolbar: React.FC<UserTableToolbarProps> = ({
           <IconButton
             onClick={() => {
               onDelete(selectedUsers);
+              undoDeleteOperation();
             }}
           >
             <DeleteIcon />
