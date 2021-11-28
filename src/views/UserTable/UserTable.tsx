@@ -2,10 +2,10 @@ import React, { useContext, useState } from 'react';
 import UserTableToolbar from './UserTableToolbar';
 import UserActionCell from './UserActionCell';
 import UserNameListToDelete from './UserNameListToDelete';
-import AlertDialog from '../shared/components/AlertDialog';
-import { UsersContext } from '../context/users-context';
-import { Hobby } from '../types/Hobby';
-import { User } from '../types/User';
+import AlertDialog from '../../shared/components/AlertDialog';
+import { UsersContext } from '../../shared/context/users-context';
+import { Hobby } from '../../shared/types/Hobby';
+import { User } from '../../shared/types/User';
 import {
   DataGrid,
   GridColDef,
@@ -15,7 +15,7 @@ import {
   GridRenderCellParams,
 } from '@mui/x-data-grid';
 
-import findUsersById from '../utils/findUsersById';
+import findUsersById from '../../shared/utils/findUsersById';
 
 const UserTable: React.FC = () => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);

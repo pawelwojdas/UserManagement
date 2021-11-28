@@ -1,5 +1,5 @@
-import fetchData from "../utils/fetchData";
-import { Hobby } from "../types/Hobby";
+import fetchData from "../shared/utils/fetchData";
+import { Hobby } from "../shared/types/Hobby";
 
 export const getHobbyList = async () => {
     try {

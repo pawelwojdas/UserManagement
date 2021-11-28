@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUsers } from '../services/Users';
+import { useUsers } from '../../services/Users';
 import { User } from '../types/User';
 import { GridRowId } from '@mui/x-data-grid';
 

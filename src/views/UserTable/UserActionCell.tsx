@@ -1,5 +1,5 @@
 import React from 'react';
-import { User } from '../types/User';
+import { User } from '../../shared/types/User';
 import { Button } from '@mui/material';
 import { GridRowId } from '@mui/x-data-grid';
 

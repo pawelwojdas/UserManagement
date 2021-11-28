@@ -1,5 +1,5 @@
 import React from 'react';
-import { User } from '../types/User';
+import { User } from '../../shared/types/User';
 import { GridRowId } from '@mui/x-data-grid';
 
 interface UserNameListToDeleteProps {

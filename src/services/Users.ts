@@ -1,8 +1,8 @@
 import { useReducer, useEffect } from 'react';
-import { Users, UsersAction } from '../types/Users';
-import { User } from '../types/User';
-import fetchData from '../utils/fetchData';
-import dataToUser from '../utils/dataToUser';
+import { Users, UsersAction } from '../shared/types/Users';
+import { User } from '../shared/types/User';
+import fetchData from '../shared/utils/fetchData';
+import dataToUser from '../shared/utils/dataToUser';
 import { getHobbyList } from './Hobbies';
 import { GridRowId } from '@mui/x-data-grid';
 

@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import UserTable from './components/UserTable';
-import UserContextProvider from './context/users-context';
+import UserTable from './views/UserTable/UserTable';
+import UserContextProvider from './shared/context/users-context';
 
 function App() {
   return (
     <div className="App">
       <UserContextProvider>
-        <UserTable/>
+        <UserTable />
       </UserContextProvider>
     </div>
   );
