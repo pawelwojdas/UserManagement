@@ -1,4 +1,5 @@
 import { Hobby } from "../types/Hobby";
+import { User } from "../types/User";
 
 
 const dataToUser = (user: any, hobbies: Hobby[]) => {

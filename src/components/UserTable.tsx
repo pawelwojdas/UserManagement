@@ -5,6 +5,7 @@ import UserNameListToDelete from './UserNameListToDelete';
 import AlertDialog from '../shared/components/AlertDialog';
 import { UsersContext } from '../context/users-context';
 import { Hobby } from '../types/Hobby';
+import { User } from '../types/User';
 import {
   DataGrid,
   GridColDef,
@@ -12,8 +13,9 @@ import {
   GridSelectionModel,
   GridRowId,
   GridRenderCellParams,
-  GridCallbackDetails,
 } from '@mui/x-data-grid';
+
+import findUsersById from '../utils/findUsersById';
 
 const UserTable: React.FC = () => {
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
@@ -21,11 +23,14 @@ const UserTable: React.FC = () => {
 
   const [usersToDeleteId, setUsersToDelete] = useState<GridRowId[]>([]);
 
-  const [deletedUsersId, setDeletedUsersId] = useState<GridRowId[]>([]);
+  const [deletedUsers, setDeletedUsers] = useState<User[]>([]);
 
-  const { users, deleteUsers } = useContext(UsersContext);
+  const { users, deleteUsers, addUsers } = useContext(UsersContext);
 
-  const undoLastDeleteOperationHandler = () => {};
+  const undoLastDeleteOperationHandler = () => {
+    addUsers(deletedUsers);
+    setDeletedUsers([]);
+  };
 
   const deleteHandler = (usersId: GridRowId[]) => {
     setUsersToDelete(usersId);
@@ -101,7 +106,7 @@ const UserTable: React.FC = () => {
           confirmButtonText={'Delete'}
           show={true}
           onConfirm={() => {
-            setDeletedUsersId(usersToDeleteId);
+            setDeletedUsers(findUsersById(users, usersToDeleteId));
             deleteUsers(usersToDeleteId);
           }}
           onClose={() => {
@@ -125,15 +130,13 @@ const UserTable: React.FC = () => {
           Toolbar: () => (
             <UserTableToolbar
               selectedUsers={selectedRows}
+              numDeletedUsers={deletedUsers.length}
               onDelete={deleteHandler}
               undoDeleteOperation={undoLastDeleteOperationHandler}
             />
           ),
         }}
-        onSelectionModelChange={(
-          selectionModel: GridSelectionModel,
-          details: GridCallbackDetails
-        ) => {
+        onSelectionModelChange={(selectionModel: GridSelectionModel) => {
           setSelectedRows(selectionModel);
         }}
       />

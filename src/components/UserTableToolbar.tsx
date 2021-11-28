@@ -1,20 +1,20 @@
 import React from 'react';
 
-import { Tooltip, Toolbar } from '@mui/material';
+import { Tooltip, Toolbar, IconButton, Typography, alpha } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { alpha } from '@mui/material/styles';
+import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import { GridRowId } from '@mui/x-data-grid';
 
 interface UserTableToolbarProps {
   selectedUsers: GridRowId[];
+  numDeletedUsers: number;
   onDelete: (usersId: GridRowId[]) => void;
   undoDeleteOperation: () => void;
 }
 
 const UserTableToolbar: React.FC<UserTableToolbarProps> = ({
   selectedUsers,
+  numDeletedUsers,
   onDelete,
   undoDeleteOperation,
 }) => {
@@ -51,7 +51,7 @@ const UserTableToolbar: React.FC<UserTableToolbarProps> = ({
           User Management
         </Typography>
       )}
-      {selectedUsers.length > 0 && (
+      {selectedUsers.length > 0 ? (
         <Tooltip title="Delete">
           <IconButton
             onClick={() => {
@@ -62,6 +62,18 @@ const UserTableToolbar: React.FC<UserTableToolbarProps> = ({
             <DeleteIcon />
           </IconButton>
         </Tooltip>
+      ) : (
+        numDeletedUsers > 0 && (
+          <Tooltip title="Restore deleted users">
+            <IconButton
+              onClick={() => {
+                undoDeleteOperation();
+              }}
+            >
+              <RestoreFromTrashIcon />
+            </IconButton>
+          </Tooltip>
+        )
       )}
     </Toolbar>
   );
