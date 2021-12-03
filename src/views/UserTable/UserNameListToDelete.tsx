@@ -1,4 +1,3 @@
-import React from 'react';
 import { User } from '../../shared/types/User';
 import { GridRowId } from '@mui/x-data-grid';
 
@@ -11,16 +10,16 @@ const UserNameListToDelete = ({
   users,
   usersId,
 }: UserNameListToDeleteProps) => {
-  const names: string[] = [];
+  const usersToDelete: User[] = [];
 
   usersId.forEach((userId) => {
-    names.push(users.find((user) => user.id === userId)!.name);
+    usersToDelete.push(users.find((user) => user.id === userId)!);
   });
 
   return (
     <ul>
-      {names.map((name, key) => (
-        <li key={key}>{name}</li>
+      {usersToDelete.map(({ name, lastName }, key) => (
+        <li key={key}>{`${name} ${lastName}`}</li>
       ))}
     </ul>
   );

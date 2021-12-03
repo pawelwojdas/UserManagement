@@ -1,11 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import UserTableToolbar from './UserTableToolbar';
 import UserActionCell from './UserActionCell';
 import UserNameListToDelete from './UserNameListToDelete';
-import AlertDialog from '../../shared/components/AlertDialog';
+import AlertDialog from '../../shared/UI/AlertDialog';
 import { UsersContext } from '../../shared/context/users-context';
-import { Hobby } from '../../shared/types/Hobby';
 import { User } from '../../shared/types/User';
+
+import { Grid } from '@mui/material';
+
 import {
   DataGrid,
   GridColDef,
@@ -27,9 +29,19 @@ const UserTable: React.FC = () => {
 
   const { users, deleteUsers, addUsers } = useContext(UsersContext);
 
+  useEffect(() => {
+    if (
+      deletedUsers.length === 0 &&
+      localStorage.getItem('deletedUsers') !== null
+    ) {
+      setDeletedUsers(JSON.parse(localStorage.getItem('deletedUsers')!));
+    }
+  }, [deletedUsers]);
+
   const undoLastDeleteOperationHandler = () => {
     addUsers(deletedUsers);
     setDeletedUsers([]);
+    localStorage.removeItem('deletedUsers');
   };
 
   const deleteHandler = (usersId: GridRowId[]) => {
@@ -37,11 +49,28 @@ const UserTable: React.FC = () => {
     setOpenedDialog(true);
   };
 
+  const onDialogConfirm = () => {
+    const deletedUsers = findUsersById(users, usersToDeleteId);
+    setDeletedUsers(deletedUsers);
+    deleteUsers(usersToDeleteId);
+    localStorage.setItem('deletedUsers', JSON.stringify(deletedUsers));
+  };
+
+  const onDialogClose = () => {
+    setOpenedDialog(false);
+    setUsersToDelete([]);
+  };
+
   const columns: GridColDef[] = [
     {
       field: 'name',
       headerName: 'Name',
-      width: 160,
+      width: 80,
+    },
+    {
+      field: 'lastName',
+      headerName: 'Last name',
+      width: 100,
     },
     { field: 'email', headerName: 'Email', width: 220 },
     {
@@ -63,7 +92,7 @@ const UserTable: React.FC = () => {
       field: 'hobbies',
       headerName: 'Hobbies',
       valueGetter: (params: GridValueGetterParams) => {
-        return params.value.map((hobby: Hobby) => hobby.name).join(', ');
+        return params.value.join(', ');
       },
       sortable: false,
       minWidth: 200,
@@ -99,20 +128,14 @@ const UserTable: React.FC = () => {
   ];
 
   return (
-    <div>
+    <Grid item xs={12}>
       {openedDialog && (
         <AlertDialog
           title={'Are you sure you want to delete?'}
           confirmButtonText={'Delete'}
           show={true}
-          onConfirm={() => {
-            setDeletedUsers(findUsersById(users, usersToDeleteId));
-            deleteUsers(usersToDeleteId);
-          }}
-          onClose={() => {
-            setOpenedDialog(false);
-            setUsersToDelete([]);
-          }}
+          onConfirm={onDialogConfirm}
+          onClose={onDialogClose}
         >
           <UserNameListToDelete users={users} usersId={usersToDeleteId} />
         </AlertDialog>
@@ -126,6 +149,7 @@ const UserTable: React.FC = () => {
         columns={columns}
         rows={users}
         pageSize={10}
+        rowsPerPageOptions={[10]}
         components={{
           Toolbar: () => (
             <UserTableToolbar
@@ -140,7 +164,7 @@ const UserTable: React.FC = () => {
           setSelectedRows(selectionModel);
         }}
       />
-    </div>
+    </Grid>
   );
 };
 
