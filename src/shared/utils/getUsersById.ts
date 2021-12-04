@@ -1,7 +1,7 @@
 import { GridRowId } from '@mui/x-data-grid';
 import { User } from '../types/User';
 
-const findUsersById = (users: User[], usersId: GridRowId[]) => {
+const getUsersById = (users: User[], usersId: GridRowId[]) => {
   const foundUsers: User[] = [];
 
   usersId.forEach((userId) => {
@@ -11,4 +11,4 @@ const findUsersById = (users: User[], usersId: GridRowId[]) => {
   return foundUsers;
 };
 
-export default findUsersById;
+export default getUsersById;

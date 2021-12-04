@@ -1,17 +1,16 @@
 import React from 'react';
-import { User } from '../../shared/types/User';
 import { Button } from '@mui/material';
 import { GridRowId } from '@mui/x-data-grid';
 
 import { useNavigate } from 'react-router-dom';
 
 interface UserActionCellProps {
-  userData: User;
+  userId: GridRowId;
   onDelete: (usersId: GridRowId[]) => void;
 }
 
 const UserActionCell: React.FC<UserActionCellProps> = ({
-  userData,
+  userId,
   onDelete,
 }) => {
   const navigate = useNavigate();
@@ -20,7 +19,7 @@ const UserActionCell: React.FC<UserActionCellProps> = ({
       <Button
         variant="contained"
         style={{ marginRight: '5px' }}
-        onClick={() => navigate(`/users/${userData.id}`)}
+        onClick={() => navigate(`/users/${userId}`)}
       >
         Details
       </Button>
@@ -28,7 +27,7 @@ const UserActionCell: React.FC<UserActionCellProps> = ({
         variant="outlined"
         color="error"
         onClick={() => {
-          onDelete([userData.id]);
+          onDelete([userId]);
         }}
       >
         Delete

@@ -1,9 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import UserTableToolbar from './UserTableToolbar';
 import UserActionCell from './UserActionCell';
 import UserNameListToDelete from './UserNameListToDelete';
 import AlertDialog from '../../shared/UI/AlertDialog';
 import { UsersContext } from '../../shared/context/users-context';
+import { SnackbarContext } from '../../shared/context/snackbar-context';
 import { User } from '../../shared/types/User';
 
 import { Grid } from '@mui/material';
@@ -17,31 +18,24 @@ import {
   GridRenderCellParams,
 } from '@mui/x-data-grid';
 
-import findUsersById from '../../shared/utils/findUsersById';
+import getUsersById from '../../shared/utils/getUsersById';
 
 const UserTable: React.FC = () => {
+  const { users, deleteUsers, addUsers } = useContext(UsersContext);
+  const { setSnackbar } = useContext(SnackbarContext);
+
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
+
   const [openedDialog, setOpenedDialog] = useState<boolean>(false);
 
   const [usersToDeleteId, setUsersToDelete] = useState<GridRowId[]>([]);
 
   const [deletedUsers, setDeletedUsers] = useState<User[]>([]);
 
-  const { users, deleteUsers, addUsers } = useContext(UsersContext);
-
-  useEffect(() => {
-    if (
-      deletedUsers.length === 0 &&
-      localStorage.getItem('deletedUsers') !== null
-    ) {
-      setDeletedUsers(JSON.parse(localStorage.getItem('deletedUsers')!));
-    }
-  }, [deletedUsers]);
-
   const undoLastDeleteOperationHandler = () => {
     addUsers(deletedUsers);
     setDeletedUsers([]);
-    localStorage.removeItem('deletedUsers');
+    setSnackbar(true, 'Users restored');
   };
 
   const deleteHandler = (usersId: GridRowId[]) => {
@@ -50,15 +44,15 @@ const UserTable: React.FC = () => {
   };
 
   const onDialogConfirm = () => {
-    const deletedUsers = findUsersById(users, usersToDeleteId);
+    setSnackbar(true, 'Users deleted');
+    const deletedUsers = getUsersById(users, usersToDeleteId);
     setDeletedUsers(deletedUsers);
     deleteUsers(usersToDeleteId);
-    localStorage.setItem('deletedUsers', JSON.stringify(deletedUsers));
   };
 
   const onDialogClose = () => {
-    setOpenedDialog(false);
     setUsersToDelete([]);
+    setOpenedDialog(false);
   };
 
   const columns: GridColDef[] = [
@@ -120,7 +114,7 @@ const UserTable: React.FC = () => {
       disableColumnMenu: true,
       renderCell: (params: GridRenderCellParams) => {
         return (
-          <UserActionCell userData={params.row} onDelete={deleteHandler} />
+          <UserActionCell userId={params.row.id} onDelete={deleteHandler} />
         );
       },
       width: 200,
@@ -133,11 +127,17 @@ const UserTable: React.FC = () => {
         <AlertDialog
           title={'Are you sure you want to delete?'}
           confirmButtonText={'Delete'}
-          show={true}
           onConfirm={onDialogConfirm}
           onClose={onDialogClose}
         >
-          <UserNameListToDelete users={users} usersId={usersToDeleteId} />
+          <UserNameListToDelete
+            users={users.map(({ id, name, lastName }) => ({
+              id,
+              name,
+              lastName,
+            }))}
+            usersId={usersToDeleteId}
+          />
         </AlertDialog>
       )}
       <DataGrid
@@ -154,7 +154,7 @@ const UserTable: React.FC = () => {
           Toolbar: () => (
             <UserTableToolbar
               selectedUsers={selectedRows}
-              numDeletedUsers={deletedUsers.length}
+              isDeletedUser={!!deletedUsers.length}
               onDelete={deleteHandler}
               undoDeleteOperation={undoLastDeleteOperationHandler}
             />

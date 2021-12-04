@@ -1,8 +1,7 @@
-import { User } from '../../shared/types/User';
 import { GridRowId } from '@mui/x-data-grid';
 
 interface UserNameListToDeleteProps {
-  users: User[];
+  users: { id: string; name: string; lastName: string }[];
   usersId: GridRowId[];
 }
 
@@ -10,7 +9,7 @@ const UserNameListToDelete = ({
   users,
   usersId,
 }: UserNameListToDeleteProps) => {
-  const usersToDelete: User[] = [];
+  const usersToDelete: { id: GridRowId; name: string; lastName: string }[] = [];
 
   usersId.forEach((userId) => {
     usersToDelete.push(users.find((user) => user.id === userId)!);

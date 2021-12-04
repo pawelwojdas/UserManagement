@@ -5,12 +5,11 @@ const fetchData = async (url: string) => {
     const response = await axios(url);
 
     if (response.status !== 200) {
-      throw new Error('Cannot fetch the data');
+      throw new Error();
     }
     return response.data;
   } catch (error) {
-    //TODO error handling
-    console.log(error);
+    throw new Error('Cannot fetch the data');
   }
 };
 

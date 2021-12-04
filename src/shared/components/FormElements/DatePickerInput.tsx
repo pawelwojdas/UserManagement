@@ -33,14 +33,6 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
     configDateTextField.helperText = meta.error;
   }
 
-  const onChangeHandler = (date: Date) => {
-    if (isValid(date)) {
-      setValue(name, format(date, 'yyyy-MM-dd'));
-    } else {
-      setValue(name, date);
-    }
-  };
-
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
@@ -49,7 +41,9 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
         maxDate={new Date()}
         mask="____-__-__"
         inputFormat="yyyy-MM-dd"
-        onChange={(date) => onChangeHandler(date)}
+        onChange={(date) => {
+          setValue(name, isValid(date) ? format(date, 'yyyy-MM-dd') : date);
+        }}
         renderInput={(props) => (
           <TextField {...configDateTextField} {...props} />
         )}
