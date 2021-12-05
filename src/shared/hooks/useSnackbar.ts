@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, useCallback } from 'react';
 
 export enum ActionType {
   SET_SNACKBAR,
@@ -40,7 +40,7 @@ export const useSnackbar = () => {
     severity: 'success',
   });
 
-  const setSnackbar = (
+  const setSnackbar = useCallback( (
     open: boolean,
     message: string,
     severity: 'error' | 'info' | 'success' | 'warning' = 'success'
@@ -52,7 +52,7 @@ export const useSnackbar = () => {
       snackbarMessage: message,
       severity
     });
-  };
+  }, []);
 
   const { snackbarOpen, snackbarMessage, severity } = snackbarState;
 

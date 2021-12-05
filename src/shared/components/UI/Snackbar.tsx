@@ -1,5 +1,5 @@
 import { forwardRef, useContext } from 'react';
-import { SnackbarContext } from '../context/snackbar-context';
+import { SnackbarContext } from '../../context/SnackbarContext';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
@@ -24,7 +24,7 @@ const SnackbarWrapper = () => {
   };
 
   return (
-    <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleClose}>
+    <Snackbar open={snackbarOpen} autoHideDuration={5000} onClose={handleClose}>
       <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
         {snackbarMessage}
       </Alert>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSnackbar } from '../hooks/use-snackbar';
+import { useSnackbar } from '../hooks/useSnackbar';
 
 interface SnackbarContextState {
   snackbarOpen: boolean;

@@ -1,11 +1,10 @@
-import { useReducer, useEffect, useContext } from 'react';
-import { UsersAction } from '../shared/types/Users';
+import { useReducer, useEffect, useContext, useCallback } from 'react';
 import { User } from '../shared/types/User';
 import { Hobby } from '../shared/types/Hobby';
-import fetchData from '../shared/utils/fetchData';
-import { getHobbyList } from './Hobbies';
+import { useHttpClient } from '../shared/hooks/useHttpClient';
+import { useHobbies } from './Hobbies';
 import { GridRowId } from '@mui/x-data-grid';
-import { SnackbarContext } from '../shared/context/snackbar-context';
+import { SnackbarContext } from '../shared/context/SnackbarContext';
 
 export enum ActionType {
   SET_USERS,
@@ -15,6 +14,12 @@ export enum ActionType {
 interface UsersReducerState {
   users: User[];
   hobbies: Hobby[];
+}
+
+export interface UsersAction {
+  type: ActionType;
+  users: User[];
+  hobbies?: Hobby[];
 }
 
 const usersReducer: React.Reducer<UsersReducerState, UsersAction> = (
@@ -41,15 +46,27 @@ export const useUsers = () => {
   });
 
   const { setSnackbar } = useContext(SnackbarContext);
+  const { fetchData } = useHttpClient();
+  const { getHobbyList } = useHobbies();
 
-  const setUsers = async () => {
+  const setUsers = useCallback(async () => {
     try {
       if (!localStorage.getItem('usersData')) {
         const fetchedUsers = (await fetchData(
           `${process.env.REACT_APP_BASE_URL}users.json`
         )) as User[];
 
-        const hobbyList = await getHobbyList();
+        let hobbyList = await getHobbyList();
+
+        if (
+          !hobbyList ||
+          !hobbyList.length ||
+          !fetchedUsers ||
+          !fetchedUsers.length
+        ) {
+          setSnackbar(true, 'No data available', 'warning');
+          return;
+        }
 
         const users = fetchedUsers.map((user) => {
           return {
@@ -89,7 +106,7 @@ export const useUsers = () => {
         setSnackbar(true, error.message, 'error');
       }
     }
-  };
+  }, [fetchData, getHobbyList, setSnackbar]);
 
   const deleteUsers = (usersId: GridRowId[]) => {
     const users = usersState.users.filter((user) => !usersId.includes(user.id));
@@ -146,7 +163,7 @@ export const useUsers = () => {
 
   useEffect(() => {
     setUsers();
-  }, []);
+  }, [setUsers]);
 
   const { users, hobbies } = usersState;
 

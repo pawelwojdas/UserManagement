@@ -1,10 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import UserTableToolbar from './UserTableToolbar';
 import UserActionCell from './UserActionCell';
 import UserNameListToDelete from './UserNameListToDelete';
-import AlertDialog from '../../shared/UI/AlertDialog';
-import { UsersContext } from '../../shared/context/users-context';
-import { SnackbarContext } from '../../shared/context/snackbar-context';
+import AlertDialog from '../../shared/components/UI/AlertDialog';
+import { UsersContext } from '../../shared/context/UsersContext';
+import { SnackbarContext } from '../../shared/context/SnackbarContext';
+import { useHttpClient } from '../../shared/hooks/useHttpClient';
 import { User } from '../../shared/types/User';
 
 import { Grid } from '@mui/material';
@@ -18,11 +19,10 @@ import {
   GridRenderCellParams,
 } from '@mui/x-data-grid';
 
-import getUsersById from '../../shared/utils/getUsersById';
-
 const UserTable: React.FC = () => {
   const { users, deleteUsers, addUsers } = useContext(UsersContext);
   const { setSnackbar } = useContext(SnackbarContext);
+  const { isLoading } = useHttpClient();
 
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
@@ -36,6 +36,7 @@ const UserTable: React.FC = () => {
     addUsers(deletedUsers);
     setDeletedUsers([]);
     setSnackbar(true, 'Users restored');
+    localStorage.removeItem('deletedUsers');
   };
 
   const deleteHandler = (usersId: GridRowId[]) => {
@@ -44,16 +45,25 @@ const UserTable: React.FC = () => {
   };
 
   const onDialogConfirm = () => {
-    setSnackbar(true, 'Users deleted');
-    const deletedUsers = getUsersById(users, usersToDeleteId);
-    setDeletedUsers(deletedUsers);
     deleteUsers(usersToDeleteId);
+    const deletedUsers = users.filter((user) =>
+      usersToDeleteId.includes(user.id)
+    );
+    setDeletedUsers(deletedUsers);
+    setSnackbar(true, 'Users deleted');
+    localStorage.setItem('deletedUsers', JSON.stringify(deletedUsers));
   };
 
   const onDialogClose = () => {
     setUsersToDelete([]);
     setOpenedDialog(false);
   };
+
+  useEffect(() => {
+    if (!deletedUsers.length && localStorage.getItem('deletedUsers') !== null) {
+      setDeletedUsers(JSON.parse(localStorage.getItem('deletedUsers')!));
+    }
+  }, [deletedUsers]);
 
   const columns: GridColDef[] = [
     {
@@ -146,6 +156,7 @@ const UserTable: React.FC = () => {
         checkboxSelection
         autoHeight
         disableSelectionOnClick
+        loading={isLoading}
         columns={columns}
         rows={users}
         pageSize={10}

@@ -8,9 +8,9 @@ import {
 import './App.css';
 import UserTable from './views/UserTable/UserTable';
 import UserForm from './views/UserForm/UserForm';
-import UserContextProvider from './shared/context/users-context';
-import SnackbarContextProvider from './shared/context/snackbar-context';
-import Snackbar from './shared/UI/Snackbar';
+import UserContextProvider from './shared/context/UsersContext';
+import SnackbarContextProvider from './shared/context/SnackbarContext';
+import Snackbar from './shared/components/UI/Snackbar';
 import ErrorBoundary from './shared/components/ErrorBoundary/ErrorBoundary';
 
 import { Grid } from '@mui/material';
