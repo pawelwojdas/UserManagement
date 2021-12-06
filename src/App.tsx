@@ -14,24 +14,29 @@ import Snackbar from './shared/components/UI/Snackbar';
 import ErrorBoundary from './shared/components/ErrorBoundary/ErrorBoundary';
 
 import { Grid } from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
+import { createTheme } from '@mui/material/styles';
 
 function App() {
+  const theme = createTheme();
   return (
     <ErrorBoundary>
-      <Grid container>
-        <SnackbarContextProvider>
-          <UserContextProvider>
-            <Router>
-              <Routes>
-                <Route path="*" element={<Navigate to="/users" />} />
-                <Route path="/users" element={<UserTable />} />
-                <Route path="/users/:userId" element={<UserForm />} />
-              </Routes>
-            </Router>
-            <Snackbar />
-          </UserContextProvider>
-        </SnackbarContextProvider>
-      </Grid>
+      <ThemeProvider theme={theme}>
+        <Grid container>
+          <SnackbarContextProvider>
+            <UserContextProvider>
+              <Router>
+                <Routes>
+                  <Route path="*" element={<Navigate to="/users" />} />
+                  <Route path="/users" element={<UserTable />} />
+                  <Route path="/users/:userId" element={<UserForm />} />
+                </Routes>
+              </Router>
+              <Snackbar />
+            </UserContextProvider>
+          </SnackbarContextProvider>
+        </Grid>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }

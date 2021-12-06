@@ -1,4 +1,5 @@
 import { GridRowId } from '@mui/x-data-grid';
+import { Typography } from '@mui/material';
 
 interface UserNameListToDeleteProps {
   users: { id: string; name: string; lastName: string }[];
@@ -18,7 +19,9 @@ const UserNameListToDelete = ({
   return (
     <ul>
       {usersToDelete.map(({ name, lastName }, key) => (
-        <li key={key}>{`${name} ${lastName}`}</li>
+        <li key={key}>
+          <Typography>{`${name} ${lastName}`}</Typography>
+        </li>
       ))}
     </ul>
   );

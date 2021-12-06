@@ -56,8 +56,8 @@ export const useUsers = () => {
           `${process.env.REACT_APP_BASE_URL}users.json`
         )) as User[];
 
-        let hobbyList = await getHobbyList();
-
+        const hobbyList = await getHobbyList();
+        
         if (
           !hobbyList ||
           !hobbyList.length ||

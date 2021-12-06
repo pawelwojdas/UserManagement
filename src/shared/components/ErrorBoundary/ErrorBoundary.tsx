@@ -2,17 +2,12 @@ import React from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { Box, Typography, Button } from '@mui/material';
 
+import { useStyles } from './style';
+
 function ErrorFallback({ resetErrorBoundary }: FallbackProps) {
+  const classes = useStyles();
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-      }}
-    >
+    <Box className={classes.box}>
       <Typography sx={{ marginBottom: '10px' }} variant="h6" component="h2">
         Something went wrong
       </Typography>

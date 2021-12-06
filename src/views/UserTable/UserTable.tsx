@@ -19,7 +19,10 @@ import {
   GridRenderCellParams,
 } from '@mui/x-data-grid';
 
+import { useStyles } from './style';
+
 const UserTable: React.FC = () => {
+  const classes = useStyles();
   const { users, deleteUsers, addUsers } = useContext(UsersContext);
   const { setSnackbar } = useContext(SnackbarContext);
   const { isLoading } = useHttpClient();
@@ -85,7 +88,12 @@ const UserTable: React.FC = () => {
       disableColumnMenu: true,
       width: 80,
     },
-    { field: 'address', headerName: 'Address', minWidth: 250, flex: 1 },
+    {
+      field: 'address',
+      headerName: 'Address',
+      minWidth: 250,
+      flex: 1,
+    },
     {
       field: 'age',
       headerName: 'Age',
@@ -151,10 +159,10 @@ const UserTable: React.FC = () => {
         </AlertDialog>
       )}
       <DataGrid
+        className={classes.grid}
         disableColumnSelector
         hideFooterSelectedRowCount
         checkboxSelection
-        autoHeight
         disableSelectionOnClick
         loading={isLoading}
         columns={columns}

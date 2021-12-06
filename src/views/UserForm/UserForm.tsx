@@ -24,7 +24,10 @@ import DatePickerInput from '../../shared/components/FormElements/DatePickerInpu
 import RadioGroup from '../../shared/components/FormElements/RadioGroup';
 import LoadingSpinner from '../../shared/components/UI/LoadingSpinner';
 
+import { useStyles } from './style';
+
 const UserForm: React.FC = () => {
+  const classes = useStyles();
   const { users, hobbies, editUser } = useContext(UsersContext);
   const { setSnackbar } = useContext(SnackbarContext);
   const { isLoading } = useHttpClient();
@@ -48,16 +51,16 @@ const UserForm: React.FC = () => {
       ) : (
         users &&
         hobbies.length && (
-          <Container maxWidth="md">
+          <Container maxWidth="sm">
             <Formik
               initialValues={initialValues}
               onSubmit={submitHandler}
               validationSchema={FORM_VALIDATION}
             >
               {({ setFieldValue, handleReset, isValid, values }) => (
-                <Form>
+                <Form className={classes.form}>
                   <Grid container spacing={3}>
-                    <Grid item xs={6}>
+                    <Grid className={classes.header} item xs={12}>
                       <Tooltip title="Back to users">
                         <IconButton
                           onClick={() => {
@@ -67,44 +70,31 @@ const UserForm: React.FC = () => {
                           <ArrowBackIcon />
                         </IconButton>
                       </Tooltip>
-                    </Grid>
-                    <Grid item xs={6}>
+
                       <Typography align="justify" variant="h5">
                         User details
                       </Typography>
                     </Grid>
-
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sm={6}>
                       <TextField name="name" label="Name" />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sm={6}>
                       <TextField name="lastName" label="Last name" />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sm={12}>
                       <TextField name="email" label="Email Address" />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sm={12}>
                       <TextField name="address" label="Address" />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sm={12}>
                       <DatePickerInput
                         name="dateOfBirth"
                         label="Date of Birth"
                         setValue={setFieldValue}
                       />
                     </Grid>
-                    <Grid item xs={6}>
-                      <RadioGroup
-                        name="gender"
-                        label="Gender"
-                        options={[
-                          { value: 'male', label: 'Male' },
-                          { value: 'female', label: 'Female' },
-                          { value: '', label: 'Not specified' },
-                        ]}
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={3}>
                       <TextField
                         InputProps={{ inputProps: { min: 1, max: 120 } }}
                         name="age"
@@ -112,21 +102,33 @@ const UserForm: React.FC = () => {
                         type="number"
                       ></TextField>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={9}>
                       <TextField
                         name="phoneNumber"
                         label="Phone Number"
                         type="tel"
                       />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={12}>
+                      <RadioGroup
+                        name="gender"
+                        label="Gender"
+                        options={[
+                          { value: 'male', label: 'Male' },
+                          { value: 'female', label: 'Female' },
+                          { value: '', label: 'Not set' },
+                        ]}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} sm={12}>
                       <Select
                         name="hobbies"
                         label="Hobbies"
                         items={hobbies!.map((hobby) => hobby.name)}
                       />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} sm={6}>
                       <Button
                         size="large"
                         fullWidth
@@ -142,7 +144,7 @@ const UserForm: React.FC = () => {
                         Update
                       </Button>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} sm={6}>
                       <Button
                         size="large"
                         color="warning"
