@@ -27,9 +27,9 @@ function App() {
             <UserContextProvider>
               <Router>
                 <Routes>
-                  <Route path="*" element={<Navigate to="/users" />} />
                   <Route path="/users" element={<UserTable />} />
                   <Route path="/users/:userId" element={<UserForm />} />
+                  <Route path="*" element={<Navigate to="/users" />} />
                 </Routes>
               </Router>
               <Snackbar />

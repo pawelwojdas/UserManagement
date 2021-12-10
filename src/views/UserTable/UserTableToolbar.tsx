@@ -32,6 +32,7 @@ const UserTableToolbar: React.FC<UserTableToolbarProps> = ({
   >
     {selectedUsers.length ? (
       <Typography
+        data-testid="SelectedUsersNumber"
         sx={{ flex: '1 1 100%' }}
         color="inherit"
         variant="subtitle1"
@@ -52,6 +53,7 @@ const UserTableToolbar: React.FC<UserTableToolbarProps> = ({
     {selectedUsers.length ? (
       <Tooltip title="Delete">
         <IconButton
+          data-testid="DeleteUsersBtn"
           onClick={() => {
             onDelete(selectedUsers);
           }}
@@ -62,7 +64,10 @@ const UserTableToolbar: React.FC<UserTableToolbarProps> = ({
     ) : (
       isDeletedUser && (
         <Tooltip title="Restore deleted users">
-          <IconButton onClick={undoDeleteOperation}>
+          <IconButton
+            data-testid="RestoreUsersBtn"
+            onClick={undoDeleteOperation}
+          >
             <RestoreFromTrashIcon />
           </IconButton>
         </Tooltip>

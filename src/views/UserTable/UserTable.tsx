@@ -169,6 +169,8 @@ const UserTable: React.FC = () => {
         rows={users}
         pageSize={10}
         rowsPerPageOptions={[10]}
+        columnBuffer={11}
+        rowBuffer={users.length}
         components={{
           Toolbar: () => (
             <UserTableToolbar

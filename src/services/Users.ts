@@ -53,7 +53,7 @@ export const useUsers = () => {
     try {
       if (!localStorage.getItem('usersData')) {
         const fetchedUsers = (await fetchData(
-          `${process.env.REACT_APP_BASE_URL}users.json`
+          `${process.env.REACT_APP_BASE_URL}/users.json`
         )) as User[];
 
         const hobbyList = await getHobbyList();

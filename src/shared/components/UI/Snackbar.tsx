@@ -24,7 +24,12 @@ const SnackbarWrapper = () => {
   };
 
   return (
-    <Snackbar open={snackbarOpen} autoHideDuration={5000} onClose={handleClose}>
+    <Snackbar
+      data-testid="Snackbar"
+      open={snackbarOpen}
+      autoHideDuration={5000}
+      onClose={handleClose}
+    >
       <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
         {snackbarMessage}
       </Alert>

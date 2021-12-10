@@ -24,6 +24,7 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
   const [{ value }, meta] = useField(name);
 
   const configDateTextField = {
+    name,
     fullWidth: true,
     error: false,
     helperText: '',

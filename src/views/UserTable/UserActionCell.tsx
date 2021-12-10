@@ -17,6 +17,7 @@ const UserActionCell: React.FC<UserActionCellProps> = ({
   return (
     <div>
       <Button
+        data-testid={`UserDetails${userId}`}
         variant="contained"
         style={{ marginRight: '5px' }}
         onClick={() => navigate(`/users/${userId}`)}
@@ -24,6 +25,7 @@ const UserActionCell: React.FC<UserActionCellProps> = ({
         Details
       </Button>
       <Button
+        data-testid={`DeleteUser${userId}`}
         variant="outlined"
         color="error"
         onClick={() => {

@@ -16,20 +16,20 @@ export const FORM_VALIDATION = Yup.object().shape({
     .required('Last name is required'),
   email: Yup.string()
     .trim()
-    .email('Please provide a valid email address')
+    .email('Email adress is not valid')
     .required('Email address is required'),
-  address: Yup.string().trim().min(10, 'Please provide a correct address'),
+  address: Yup.string().trim().min(10, 'Address is not valid'),
   age: Yup.number()
     .positive()
     .integer()
     .required('Age is required')
-    .min(1, 'Please provide a valid age')
-    .max(120, 'Please provide a valid age'),
+    .min(1, 'Age is not valid')
+    .max(120, 'Age is not valid'),
   hobbies: Yup.array().min(1, 'Please select at least one hobby'),
   dateOfBirth: Yup.date()
     .typeError('Incorrect date format')
-    .max(new Date(), 'Please provide valid date of birth'),
+    .max(new Date(), 'Date of birth is not valid'),
   phoneNumber: Yup.string()
     .trim()
-    .matches(PHONE_REG_EXP, 'Please provide valid phone number'),
+    .matches(PHONE_REG_EXP, 'Phone number is not valid'),
 });

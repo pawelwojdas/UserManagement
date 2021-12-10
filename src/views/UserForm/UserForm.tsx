@@ -49,8 +49,8 @@ const UserForm: React.FC = () => {
       {isLoading ? (
         <LoadingSpinner loading={isLoading} />
       ) : (
-        users &&
-        hobbies.length && (
+        !!users.length &&
+        !!hobbies.length && (
           <Container maxWidth="sm">
             <Formik
               initialValues={initialValues}
@@ -63,8 +63,9 @@ const UserForm: React.FC = () => {
                     <Grid className={classes.header} item xs={12}>
                       <Tooltip title="Back to users">
                         <IconButton
+                          data-testid="BackToUserBtn"
                           onClick={() => {
-                            navigate(-1);
+                            navigate('/users');
                           }}
                         >
                           <ArrowBackIcon />
@@ -94,7 +95,7 @@ const UserForm: React.FC = () => {
                         setValue={setFieldValue}
                       />
                     </Grid>
-                    <Grid item xs={12} sm={3}>
+                    <Grid item xs={12} sm={4}>
                       <TextField
                         InputProps={{ inputProps: { min: 1, max: 120 } }}
                         name="age"
@@ -102,7 +103,7 @@ const UserForm: React.FC = () => {
                         type="number"
                       ></TextField>
                     </Grid>
-                    <Grid item xs={12} sm={9}>
+                    <Grid item xs={12} sm={8}>
                       <TextField
                         name="phoneNumber"
                         label="Phone Number"
@@ -130,6 +131,7 @@ const UserForm: React.FC = () => {
                     </Grid>
                     <Grid item xs={6} sm={6}>
                       <Button
+                        data-testid="UpdateUserBtn"
                         size="large"
                         fullWidth
                         color="info"
@@ -146,6 +148,7 @@ const UserForm: React.FC = () => {
                     </Grid>
                     <Grid item xs={6} sm={6}>
                       <Button
+                        data-testid="ResetUserBtn"
                         size="large"
                         color="warning"
                         fullWidth

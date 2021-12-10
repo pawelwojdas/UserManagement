@@ -24,12 +24,14 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
   };
 
   return (
-    <Dialog open onClose={onClose}>
+    <Dialog open onClose={onClose} data-testid="AlertDialog">
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>{children}</DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={handleConfirm}>{confirmButtonText}</Button>
+        <Button data-testid="AlertDialogConfirmBtn" onClick={handleConfirm}>
+          {confirmButtonText}
+        </Button>
       </DialogActions>
     </Dialog>
   );
