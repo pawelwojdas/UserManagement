@@ -10,6 +10,7 @@ interface UsersContextState {
   deleteUsers: (usersId: GridRowId[]) => void;
   addUsers: (users: User[]) => void;
   editUser: (user: User) => void;
+  isLoading: boolean;
 }
 
 export const UsersContext = React.createContext<UsersContextState>({
@@ -18,14 +19,16 @@ export const UsersContext = React.createContext<UsersContextState>({
   deleteUsers: () => {},
   addUsers: () => {},
   editUser: () => {},
+  isLoading: false,
 });
 
 const UserContextProvider: React.FC = (props) => {
-  const { users, hobbies, deleteUsers, addUsers, editUser } = useUsers();
+  const { users, hobbies, deleteUsers, addUsers, editUser, isLoading } =
+    useUsers();
 
   return (
     <UsersContext.Provider
-      value={{ users, hobbies, deleteUsers, addUsers, editUser }}
+      value={{ users, hobbies, deleteUsers, addUsers, editUser, isLoading }}
     >
       {props.children}
     </UsersContext.Provider>

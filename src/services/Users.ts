@@ -46,7 +46,7 @@ export const useUsers = () => {
   });
 
   const { setSnackbar } = useContext(SnackbarContext);
-  const { fetchData } = useHttpClient();
+  const { fetchData, isLoading} = useHttpClient();
   const { getHobbyList } = useHobbies();
 
   const setUsers = useCallback(async () => {
@@ -167,5 +167,5 @@ export const useUsers = () => {
 
   const { users, hobbies } = usersState;
 
-  return { users, hobbies, deleteUsers, addUsers, editUser };
+  return { users, hobbies, deleteUsers, addUsers, editUser, isLoading };
 };

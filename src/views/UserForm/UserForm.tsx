@@ -1,8 +1,7 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SnackbarContext } from '../../shared/context/SnackbarContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UsersContext } from '../../shared/context/UsersContext';
-import { useHttpClient } from '../../shared/hooks/useHttpClient';
 import { User } from '../../shared/types/User';
 import { Formik, Form } from 'formik';
 import { FORM_VALIDATION } from './formValidation';
@@ -27,16 +26,25 @@ import LoadingSpinner from '../../shared/components/UI/LoadingSpinner';
 import { useStyles } from './style';
 
 const UserForm: React.FC = () => {
+  const [initialValues, setInitialValues] = useState<User>(null!);
   const classes = useStyles();
-  const { users, hobbies, editUser } = useContext(UsersContext);
+  const { users, hobbies, editUser, isLoading } = useContext(UsersContext);
   const { setSnackbar } = useContext(SnackbarContext);
-  const { isLoading } = useHttpClient();
   const { userId } = useParams();
   const navigate = useNavigate();
 
-  const initialValues: User = {
-    ...users.find((user) => user.id === userId)!,
-  };
+  useEffect(() => {
+    if (
+      !isLoading &&
+      users.length &&
+      !users.find((user) => user.id === userId)
+    ) {
+      setSnackbar(true, 'User does not exist', 'warning');
+      navigate('/users');
+    } else if (users.find((user) => user.id === userId)) {
+      setInitialValues(users.find((user) => user.id === userId)!);
+    }
+  }, [setSnackbar, navigate, isLoading, userId, users]);
 
   const submitHandler = (user: User) => {
     setSnackbar(true, 'User updated');
@@ -50,10 +58,11 @@ const UserForm: React.FC = () => {
         <LoadingSpinner loading={isLoading} />
       ) : (
         !!users.length &&
-        !!hobbies.length && (
+        !!hobbies.length &&
+        initialValues && (
           <Container maxWidth="sm">
             <Formik
-              initialValues={initialValues}
+              initialValues={initialValues as User}
               onSubmit={submitHandler}
               validationSchema={FORM_VALIDATION}
             >

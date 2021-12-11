@@ -5,7 +5,6 @@ import UserNameListToDelete from './UserNameListToDelete';
 import AlertDialog from '../../shared/components/UI/AlertDialog';
 import { UsersContext } from '../../shared/context/UsersContext';
 import { SnackbarContext } from '../../shared/context/SnackbarContext';
-import { useHttpClient } from '../../shared/hooks/useHttpClient';
 import { User } from '../../shared/types/User';
 
 import { Grid } from '@mui/material';
@@ -23,9 +22,8 @@ import { useStyles } from './style';
 
 const UserTable: React.FC = () => {
   const classes = useStyles();
-  const { users, deleteUsers, addUsers } = useContext(UsersContext);
+  const { users, deleteUsers, addUsers, isLoading } = useContext(UsersContext);
   const { setSnackbar } = useContext(SnackbarContext);
-  const { isLoading } = useHttpClient();
 
   const [selectedRows, setSelectedRows] = useState<GridRowId[]>([]);
 
